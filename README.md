@@ -1,6 +1,8 @@
 # Kaggle-Titanic-Disaster
 A full walkthrough of the process of creating a predictive learning model, data exploration, data cleaning and analsis through various classification methods. 
+
 **Author**
+
 Jordan Robinson; [Jordan Kaggle](https://www.kaggle.com/code/jordanerobinson/titanic-survival-prediction-python-walkthrough)
 
 ## File Index
