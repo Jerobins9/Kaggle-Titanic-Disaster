@@ -1,0 +1,34 @@
+Data Visualization
+
+Data visualization is a useful tool for data cleaning as it can assist with detecting outliers, missing values, implicit boundaries and much more. 
+In this case I will be using it to check the effectiveness of my data cleaning methods as well as correlating various related features.
+
+Age Vs Survival
+
+Throughout the cleaning process I noticed a few relationships between age and survival. 
+Most passangers in this data set are in the age range 15-35 years old. 
+The oldest surviving passanger was 80 years old and children under the age of 4 had a high survival rate.
+
+'''
+age_hist = sns.FacetGrid(train_df, col= 'Survived')
+age_hist.map(plt.hist, 'Age', bins = 20, color = "Orange")
+'''
+
+Survival Classified by Age and Passenger Class
+'''
+grid = sns.FacetGrid(train_df, col = 'Survived', row = 'Pclass', size = 2.2, aspect = 1.6)
+grid.map(plt.hist, 'Age', alpha = .5, bins = 20, color = "Orange")
+grid.add_legend();
+'''
+
+Surviral by Sex, Passenger Class and Embarking Port
+Next I explored the correlation between sex,passenger class, embarking port and survival.
+I found that Female passengers had a higher survival rate across all aspects. 
+However, males that embarked at port C were more likely to survive then males that embarked at ports S and Q.
+
+'''
+grid = sns.FacetGrid(train_df, row='Embarked', size=2.2, aspect=1.6)
+grid.map(sns.pointplot, 'Pclass', 'Survived', 'Sex', palette='deep')
+grid.add_legend()
+'''
+
