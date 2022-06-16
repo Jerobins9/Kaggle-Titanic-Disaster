@@ -100,7 +100,8 @@ The survival rate based on age will be determined after the data cleaning proces
 
 * ** Pclass ** it was observed that there is a signficant correlation amoung 1st class passengers/pclass 1. 
 This correltation decreases with the Pclass, meaning those on the second and 3rd class decks had a poor survival rate.
-* ** Sex ** it was observed that there is a significant correlation between Sex and Survival as the Sex=Female had about a 74% survival rate. Compared to Sex=Male with a survival rate of about 19%
+* ** Sex ** it was observed that there is a significant correlation between Sex and Survival as the Sex=Female had about a 74% survival rate. 
+Compared to Sex=Male with a survival rate of about 19%
 
 '''
 #survival rate of pclass
