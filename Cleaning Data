@@ -1,0 +1,135 @@
+Cleaning Data
+
+Now that I have an idea of what types of data are in the set and have an idea of what data is missing the process of cleaning or wrangling data begins. 
+The focus of this process is to transform and unify the data for easy access and analysis. 
+I will do this by dropping and adding features, converting data types and completing numerical continuous features.
+
+Unifying Categorical Features
+In order to unify certain aspects of the data I converted features that contain strings to numerical values. 
+Numerical values are favored by most models and will create consistancy through the features.
+
+'''
+for dataset in combine:
+        dataset['Sex'] = dataset['Sex'].map( {'female': 1, 'male': 0} ).astype(int)
+        
+train_df.head()
+'''
+
+
+Completing Continuous Feature
+
+Through the exploration of the data and its features above it was found that 177 data points for age were missing. 
+In order to correct this use the randomized age data will be generated using the mean age and standard deviation of the data set to account 
+for the missing values.
+
+'''
+#compute mean and standard dev of Age
+age_mean = train_df['Age'].mean()
+age_std = train_df['Age'].std()
+
+#number of NaN values (non number values)
+num_na = train_df['Age'].isna().sum()
+
+#generate random ages from mean and standard dev
+random_vals = age_mean + age_std * np.random.randn(num_na)
+
+#replace missing values with random_vals
+train_df.loc[train_df['Age'].isna(), 'Age'] = random_vals
+
+# convert to whole numbers
+train_df['Age'] = train_df['Age'].astype(np.int64)
+
+#view data to check work
+train_df.tail()
+'''
+
+'''
+#Verify that missing values for age have been replaced.
+train_df.isnull().sum()
+'''
+
+'''
+#compute mean and standard dev of Age
+age_mean = test_df['Age'].mean()
+age_std = test_df['Age'].std()
+
+#number of NaN values (non number values)
+num_na = test_df['Age'].isna().sum()
+
+#generate random ages from mean and standard dev
+random_vals = age_mean + age_std * np.random.randn(num_na)
+
+#replace missing values with random_vals
+test_df.loc[test_df['Age'].isna(), 'Age'] = random_vals
+
+# convert to whole numbers
+test_df['Age'] = test_df['Age'].astype(np.int64)
+
+#view data to check work
+train_df.tail()
+'''
+
+'''
+grid = sns.FacetGrid(train_df, row= 'Pclass', col= 'Sex', size = 2.2, aspect = 2.6)
+grid.map(plt.hist, 'Age', alpha= .5, bins=10, color= 'orange')
+plt.ylim((0,80))
+grid.add_legend()
+'''
+
+
+Completing a Categorical Feature
+
+Throughout the process of data exploration it was found that data points in the feature embarked were missing. 
+In order to correct this I will fill those spaces with the most common occurance before converting the categorical feature to numeric.
+
+'''
+#discover the most frequently used port
+port = train_df.Embarked.dropna().mode()[0]
+port
+'''
+
+'''
+for dataset in combine:
+    dataset['Embarked'] = dataset['Embarked'].fillna(port)
+    
+train_df[['Embarked', 'Survived']].groupby(['Embarked'], 
+                                as_index=False).mean().sort_values(by='Survived', ascending=False)
+'''
+
+'''
+train_df.isnull().sum()
+'''
+
+'''
+#convert categorical embarked feature to numeric
+#this creates a unifying data type for analysis
+
+for dataset in combine:
+    dataset['Embarked'] = dataset['Embarked'].map( {'S': 0, 'C': 1, 'Q': 2} ).astype(int)
+
+train_df.head()
+'''
+
+'''
+#convert Fare from float to int64
+data = [train_df,test_df]
+for dataset in data:
+    dataset['Fare'] = dataset['Fare'].fillna(0)
+    dataset['Fare'] = dataset['Fare'].astype(int)
+'''
+
+Correction by dropping features
+
+Another tool used in data cleaning is dropping data or features in order to increase overall quality and efficency of the data. 
+In this season of the data cleaning process I dropped the features PassengerID, Ticket, Cabin and Name as I do not intend to use them in this analysis.
+
+'''
+train_df = train_df.drop(['PassengerId'], axis=1)
+train_df = train_df.drop(['Ticket', 'Cabin', 'Name',], axis=1)
+test_df = test_df.drop(['Ticket', 'Cabin', 'Name',], axis=1)
+combine = [train_df, test_df]
+train_df.shape,test_df.shape
+'''
+
+
+
