@@ -1,0 +1,122 @@
+Import Process
+# Import libraries and packages 
+'''
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import seaborn as sns # data visualization
+%matplotlib inline
+from matplotlib import pyplot as plt
+from matplotlib import style
+
+#packages for Algorithms
+from sklearn import linear_model
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+
+'''
+
+# Import Data
+The data referenced below and used throughout this project is sources directly from "Titanic: Machine Learning from Disaster"
+
+'''
+train_df = pd.read_csv('../input/titanic/train.csv')
+test_df = pd.read_csv('../input/titanic/test.csv')
+combine = [train_df, test_df]
+'''
+
+Data Exploration
+I started the data exploration process by trying to answer the following questions to become more familiar with the data types and quantity of data.
+
+* 1. Which features are listed in the dataset?
+* 2. Which features are categorical or numerical?
+* 3. Which features include mixed data types?
+* 4. Which features may contain errors, typos or missing data?
+* 5. Which features could contribute to a high survival rate?
+
+## The Features
+*1. Which features are listed in the data set?
+PassengerID, Survived, Pclass, Name, Sex, Age, Sibsp, Parch, Ticket, Fare, Cabin and Embarked. This was discovered through the process below.
+
+'''
+print(train_df.columns.values)
+'''
+['PassengerId' 'Survived' 'Pclass' 'Name' 'Sex' 'Age' 'SibSp' 'Parch'
+ 'Ticket' 'Fare' 'Cabin' 'Embarked']
+
+*2. Which features are catergorical or numerical?
+Previewing the data found a few different data types in each feature. The data types included are defined as follows.
+Catergorical data is defined as a variable that can take one of a limited, usually fixed, number of possible values.
+Ordinal data is a type of categorical data but it refers to a type of data that can be ranked in a natural order 
+Continuous data is a type of numerical data that be measured on an infinate scale. 
+Discrete data is a data type that involves integers and a limited number of values possible.
+
+* Catergorical: Survived, Sex, and Embarked
+* Ordinal: Pclass
+* Continous: Age and Fare
+* Discrete: Sibsp, Parch
+
+'''
+#Previewing the data to determine data types and column headers.
+#The head command is used to output the first part of the file.
+train_df.head()
+'''
+
+*3. Which features include mixed data types?
+Ticket and Cabins have mixed data types.
+
+*4. Which features may contain errors, types or missing data?
+This will be determined throughout the data cleaning process 
+
+'''
+#Previewing data continued
+#The tail command will output of last part of the file.
+train_df.tail()
+'''
+
+'''
+#display nulls in data within range
+train_df.info()
+print('_'*10)
+test_df.info()
+'''
+
+'''
+# determine the number of null or missing values in each column for train set
+train_df.isnull().sum()
+'''
+
+'''
+#determine the number of null or missing value in each column for test set
+test_df.isnull().sum()
+'''
+
+*5. Which features appear contribute to a higher survival rate?
+Based on observations and assumptions of preliminary data exploration the features I will focus on correlationg are Pclass(socio-econimic status),
+Sex and Age.
+Displayed below are results of the Pclass and Sex analysis. 
+The survival rate based on age will be determined after the data cleaning process as there are missing features within the data.
+
+* ** Pclass ** it was observed that there is a signficant correlation amoung 1st class passengers/pclass 1. 
+This correltation decreases with the Pclass, meaning those on the second and 3rd class decks had a poor survival rate.
+* ** Sex ** it was observed that there is a significant correlation between Sex and Survival as the Sex=Female had about a 74% survival rate. Compared to Sex=Male with a survival rate of about 19%
+
+'''
+#survival rate of pclass
+train_df[['Pclass', 'Survived']].groupby(['Pclass'], as_index=False).mean().sort_values(by='Survived', ascending=False)
+'''
+'''
+#visual representation of survival rate per Pclass
+sns.barplot(x='Pclass',y='Survived',data=train_df)
+'''
+
+'''
+#survival rate based on sex 1=Female, 0=Male
+train_df[["Sex", "Survived"]].groupby(['Sex'], as_index=False).mean().sort_values(by='Survived', ascending=False)
+'''
+
+'''
+#Visual representation of survival rate
+sns.barplot(x='Sex',y='Survived',data=train_df)
+'''
