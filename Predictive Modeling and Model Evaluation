@@ -1,0 +1,94 @@
+Predicitive modeling is a commonly used statistical techinque to predict future behavior by analyzing historical and current data 
+and generation a model to help predict outcomes.
+The challenge asks to identify relationships between surviral and other variables so I chose a selection of classication and regression models to 
+best answer this question.
+
+* Logistic Regression
+* Random Forest
+* k-Nearest Neighbors
+* Decision Tree
+
+'''
+X_train = train_df.drop("Survived", axis=1)
+Y_train = train_df["Survived"]
+X_test  = test_df.drop("PassengerId", axis=1).copy()
+'''
+
+
+Logistic Regression
+
+Logistic regression is a statisical model used to handle classification problems. 
+Logistic regression is a process of modeling the probablity of a discrete outcome given an input variable. 
+In other words it measures the realatoinship between the categorical depedent feature and one of more independent features.
+
+'''
+logreg = LogisticRegression()
+logreg.fit(X_train, Y_train)
+Y_pred = logreg.predict(X_test)
+acc_log = round(logreg.score(X_train, Y_train) * 100, 2)
+acc_log
+'''
+
+
+Decision Tree
+
+Decision Trees are a non-parametric surpervised learning method used for classifications and regression.
+The goal is to use a tree like model to evaluate decisions and their possible outcomes including things such as probablity, cost, and 
+other relavent features. 
+
+'''
+# Decision Tree
+
+decision_tree = DecisionTreeClassifier()
+decision_tree.fit(X_train, Y_train)
+Y_pred = decision_tree.predict(X_test)
+acc_decision_tree = round(decision_tree.score(X_train, Y_train) * 100, 2)
+acc_decision_tree
+'''
+
+
+Random Forest
+
+The random forest analysis is a classification algorithm consisting of many decision trees. 
+However is utilizes a bagging method and randomness features.
+
+'''
+# Random Forest
+
+random_forest = RandomForestClassifier(n_estimators=100)
+random_forest.fit(X_train, Y_train)
+Y_pred = random_forest.predict(X_test)
+random_forest.score(X_train, Y_train)
+acc_random_forest = round(random_forest.score(X_train, Y_train) * 100, 2)
+acc_random_forest
+'''
+
+
+K-Nearest Neighbor
+
+The K-nearest Neighbor algorithm is a data classification method for estimating the likelihood of the data point will beocome a member of one group 
+or another based on what the group data points nearest to is belong to.
+
+'''
+knn = KNeighborsClassifier(n_neighbors = 3)
+knn.fit(X_train, Y_train)
+Y_pred = knn.predict(X_test)
+acc_knn = round(knn.score(X_train, Y_train) * 100, 2)
+acc_knn
+'''
+
+
+Model Evaluation
+
+The chart below shows the confidence scores from the analysis preformed above.
+
+'''
+models = pd.DataFrame({
+   'Model': ['KNN', 'Logistic Regression', 'Random Forest',  'Decision Tree'],
+    'Score': [ acc_knn, acc_log, acc_random_forest, acc_decision_tree]})
+models.sort_values(by='Score', ascending=False)
+'''
+
+
+
+
